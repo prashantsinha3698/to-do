@@ -1,57 +1,129 @@
-let todoArray=[];
+let todoArray = [];
 const todoInput = document.getElementById('todoInput');
 const todoList = document.querySelector('.todo-list');
-const dateInput =document.getElementById('date-input');
-const todoDate =document.getElementById('todo-date');
-console.log(todoInput.value);
-document.addEventListener('keydown', (event) => {
-    if(event.key === 'Enter'){
-        addToDO();
-    }
-});
+const dateInput = document.getElementById('date-input');
+
+// Load existing todos from localStorage on page load
 window.onload = function(){
-    if(localStorage.getItem('todoArrayString')){
-        todoArray=localStorage.getItem('todoArrayString').split(',')||[];
-        includeToDo();
+    if (localStorage.getItem('todoArrayString')) {
+        todoArray = JSON.parse(localStorage.getItem('todoArrayString')) || [];
+        renderToDo();
     }
 }
 
-function addToDO(){
-    if(localStorage.getItem('todoArrayString')){
-    todoArray=localStorage.getItem('todoArrayString').split(',')||[];}
-    if(todoInput.value){
-        console.log(todoInput.value);
-        //console.log(todoDate.value);
-        todoArray.push(todoInput.value);
-        console.log(todoArray);
-        includeToDo();
-        todoInput.value='';
-    }  
-}
-function includeToDo(){
-    let allToDoString='';
-    for (let i = 0; i < todoArray.length; i++) {
-        allToDoString += 
-            `<div class="todo-list-div">
-                <li>${todoArray[i]}</li>
-                <button title="Remove"class="delete-btn" onclick="deleteToDo(${i})"><i class="fa-regular fa-trash-can"></i></button>
-            </div>`;
+// Add task function
+function addToDO() {
+    const todoDateElement = document.getElementById('todo-date');
+    const task = todoInput.value;
+    const date = todoDateElement ? todoDateElement.value : null;
+
+    if (task) {
+        const todoItem = { task, date };
+        todoArray.push(todoItem);
+        renderToDo();
+        todoInput.value = '';
+        if (todoDateElement) {
+            dateInput.innerHTML = '';  // Clear the date input after adding
+        }
     }
-    localStorage.setItem('todoArrayString',todoArray.toString());
-    todoList.innerHTML=allToDoString;
 }
-function deleteToDo(i){
-    let spliceElement=todoArray.splice(i,1);
+
+// Display the todo items
+function renderToDo() {
+    let allToDoString = '';
+    for (let i = 0; i < todoArray.length; i++) {
+        const { task, date } = todoArray[i];
+        //formatting date
+        const options = { day: 'numeric', month: 'short', year: 'numeric' };
+        const dateObj = new Date(date);
+        const forattedDate = new Intl.DateTimeFormat('en-US', options).format(dateObj);
+        allToDoString += `
+        <div class="todo-list-div" >
+            
+            <li class="todo-task">
+                <span class="task-text">${task}</span>
+                ${date ? '<span class="due-date"><strong style="color:white">Due:</strong> ' + forattedDate + '</span>' : ''}
+            </li>
+            <button title="Edit" class="edit-btn" onclick="editTask(${i})">
+                <i class="fa-regular fa-pen-to-square"></i>
+            </button>
+            <button title="Remove" class="delete-btn" onclick="deleteToDo(${i})">
+                <i class="fa-regular fa-trash-can"></i>
+            </button>
+        </div>
+        <div id="todoList-div-${i}"></div>
+        `;
+    }
+    localStorage.setItem('todoArrayString', JSON.stringify(todoArray));
+    todoList.innerHTML = allToDoString;
+}
+
+// Remove a todo item
+function deleteToDo(i) {
+    let spliceElement = todoArray.splice(i, 1);
     console.log(`removed element: ${spliceElement}`);
     console.log(todoArray);
-    localStorage.setItem('todoArrayString',todoArray.toString());
-    includeToDo();
+    localStorage.setItem('todoArrayString', JSON.stringify(todoArray));
+    renderToDo();
 }
-function addDate(){
-    if(dateInput.innerHTML){
-        dateInput.innerHTML='';
+
+// Toggle date input visibility
+function addDate() {
+    const existingDateInput = document.getElementById('todo-date');
+    if (existingDateInput) {
+        dateInput.innerHTML = ''; // Clear the date input if it exists
+    } else {
+        dateInput.innerHTML = '<input type="date" name="addDate" id="todo-date">';
     }
-    else{
-        dateInput.innerHTML='<input type="date" name="addDate" id="todo-date">';
+}
+//called as soon edit button clicked for any specified to-do task
+function editTask(i){
+    console.log('inside editTask');
+    const todoListDiv = document.getElementById(`todoList-div-${i}`);
+    console.log('Inner html: '+todoListDiv.innerHTML);
+    if (todoListDiv.innerHTML) {
+        todoListDiv.innerHTML = '';
+        todoListDiv.classList.remove("editBox");
+    } else {
+        todoListDiv.innerHTML = `
+        <div class="todo-form">
+            <input type="text" id='todoEdit-Input' class="todo-input" placeholder="Write the task" autocomplete="off">
+            <button title="Update" class="add-btn" onclick="editToDO(${i})">Update</button>
+        </div>
+        <button class ="add-date-edit" id='add-date' onclick="addDateEdit(${i})">${todoArray[i].date?'Update Date':'Add Date'}</button>
+        <button class ="remove-date-edit" id='add-date' onclick="removeDateEdit(${i})">Remove Date</button>
+        <div id="date-input-edit-${i}"></div>`;
+        todoListDiv.classList.add("editBox");
     }
+}
+//called as soon as user click edit button to update the to-do task
+function editToDO(i){
+    const toDoEditInput = document.getElementById('todoEdit-Input');
+    const existingDateInput = document.getElementById(`todo-date-edited-${i}`); 
+    console.log(`todoArray ${i}: ${todoArray[i].task +':'+todoArray[i].date}`);
+
+    const task = toDoEditInput.value;
+    const date = existingDateInput ? existingDateInput.value : null;
+
+    todoArray[i].task=toDoEditInput.value?toDoEditInput.value:todoArray[i].task; //Updating the existing task in todoArray.
+    todoArray[i].date=date?date:todoArray[i].date?todoArray[i].date:null;
+    //updating the localStorage as well with new edited todoArray.
+    localStorage.setItem('todoArrayString', JSON.stringify(todoArray));
+    renderToDo();//render new todo list.
+}
+// Toggle date input visibility
+function addDateEdit(i) {
+    const editDateInputDiv = document.getElementById(`date-input-edit-${i}`);
+    const existingDateInput = document.getElementById(`todo-date-edited`);
+    if (editDateInputDiv.innerHTML) {
+        editDateInputDiv.innerHTML = ''; // Clear the date input if it exists
+    } else {
+        editDateInputDiv.innerHTML = `<input type="date" name="addDate" class="dueDate-edit" id="todo-date-edited-${i}" >`;
+    }
+}
+//remove the date
+function removeDateEdit(i){
+    todoArray[i].date=null;
+    localStorage.setItem('todoArrayString', JSON.stringify(todoArray));
+    renderToDo();
 }

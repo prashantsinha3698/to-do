@@ -1,10 +1,22 @@
-/* General styles */
+:root {
+    /* Color Variables */
+    --primary-color: #121212;       /* Background color */
+    --secondary-color: #191919;     /* Container background */
+    --accent-color: #FF5722;        /* Accent color for buttons */
+    --text-color: #E0E0E0;          /* Main text color */
+    --input-bg-color: #333333;      /* Input and item background */
+    --input-border-color: #555555;  /* Border color for inputs */
+    --hover-accent-color: #E64A19;  /* Hover color for buttons */
+    --hover-delete-color: #d40000;  /* Hover color for delete buttons */
+    --shadow-color: rgba(0, 0, 0, 0.5); /* Box shadow color */
+}
+
 body {
     margin: 0;
     padding: 0;
     font-family: 'Arial', sans-serif;
-    background-color: #121212;
-    color: #E0E0E0;
+    background-color: var(--primary-color);
+    color: var(--text-color);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -12,15 +24,14 @@ body {
 }
 
 .container {
-    background-color: #191919;
+    background-color: var(--secondary-color);
     padding: 20px;
     border-radius: 8px;
     width: 90%;
-    max-width: 400px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+    max-width: 600px;
+    box-shadow: 0 4px 6px var(--shadow-color);
 }
 
-/* Title */
 .title {
     text-align: center;
     margin-bottom: 20px;
@@ -28,7 +39,6 @@ body {
     font-weight: bold;
 }
 
-/* Form */
 .todo-form {
     display: flex;
     justify-content: space-between;
@@ -40,50 +50,60 @@ body {
     padding: 10px;
     border: none;
     border-radius: 4px;
-    background-color: #333333;
-    color: #E0E0E0;
+    background-color: var(--input-bg-color);
+    color: var(--text-color);
     margin-right: 10px;
 }
 
 .add-btn {
     padding: 10px 20px;
-    background-color: #FF5722;
+    background-color: var(--accent-color);
     border: none;
     border-radius: 4px;
     color: #FFF;
     cursor: pointer;
     transition: background-color 0.3s ease;
+    &:hover {
+        background-color: var(--hover-accent-color);
+    }
 }
 
-.add-btn:hover {
-    background-color: #E64A19;
-}
-
-#add-date{
+#add-date {
     position: relative;
-    top: -10px;
+    margin-top: -10px;
     margin-bottom: 10px;
     cursor: pointer;
     border: none;
     background: none;
     text-decoration: none;
-    font-size: 11px;
-    color: #E0E0E0;
+    font-size: 12px;
+    color: var(--text-color);
+    transition: color 0.3s ease;
+    &:hover {
+        color: var(--accent-color);
+    }    
 }
-#todo-date {
-    cursor: pointer;
-    width: 150px; /* Adjust width as needed */
-    height: 30px;
-    background-color: #191919;
-    font-size: 14px;
-    border:0.2px #E0E0E0;
-    border-radius: 4px;
-    padding: 1px;
-    color: #E0E0E0;
-    margin-bottom: 10px;
-  }
 
-/* To-Do List */
+/* Date Input */
+#todo-date, .dueDate-edit{
+    cursor: pointer;
+    width: 100%;
+    padding: 10px;
+    background-color: var(--input-bg-color);
+    font-size: 14px;
+    border: 1px solid var(--input-border-color);
+    border-radius: 4px;
+    color: var(--text-color);
+    margin-top: 5px;
+    margin-bottom: 10px;
+    transition: border-color 0.3s ease;
+    box-sizing: border-box;
+    &:focus {
+        border-color: var(--accent-color);
+        outline: none;
+    }
+}
+
 .todo-list {
     list-style-type: none;
     padding: 0;
@@ -92,41 +112,61 @@ body {
 }
 
 .todo-list-div {
-    width: 100%;
-    box-sizing: border-box;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 10px; /* Add margin for spacing between items */
+    margin-bottom: 10px;
     padding: 10px;
-    border: none;
     border-radius: 4px;
-    background-color: #333333;
+    background-color: var(--input-bg-color);
 }
 
-.todo-list li {
+/* Task and Date styles */
+.todo-task {
+    display: flex;
+    flex-direction: column;
     flex: 1;
-    font-family: 'Arial', sans-serif;
     font-size: 14px;
-    color: #E0E0E0;
+    color: var(--text-color);
     margin-right: 10px;
-    list-style-type: none;
+}
+
+.task-text {
+    font-weight: bold;
+    margin-bottom: 5px; /* Space between task and due date */
+}
+
+.due-date {
+    font-size: 11px;
+    color: var(--accent-color);
+    margin-top: 2px;
+}
+
+/* Edit Button */
+.edit-btn {
+    border: none;
+    background: none;
+    color: var(--text-color);
+    cursor: pointer;
+    transition: color 0.3s ease;
+    margin-right: 10px;
+    &:hover {
+        color: var(--hover-accent-color);
+    }
 }
 
 
 .delete-btn {
     border: none;
-    background-color: rgba(255, 255, 255, 0);
-    border: none;
-    border-radius: 4px;
-    color: #FFF;
+    background: none;
+    color: var(--text-color);
     cursor: pointer;
+    transition: color 0.3s ease;
+    &:hover {
+        color: var(--hover-delete-color);
+    }
 }
-
-.delete-btn:hover {
-    background-color: none;
-    color: #d40000;
-}
+/* Other existing styles remain unchanged */
 
 
 /* Responsive */
@@ -137,5 +177,9 @@ body {
 
     .todo-input {
         padding: 8px;
+    }
+
+    #todo-date {
+        width: 100%;
     }
 }
