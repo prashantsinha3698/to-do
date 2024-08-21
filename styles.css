@@ -1,0 +1,141 @@
+/* General styles */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Arial', sans-serif;
+    background-color: #121212;
+    color: #E0E0E0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.container {
+    background-color: #191919;
+    padding: 20px;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 400px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+}
+
+/* Title */
+.title {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+/* Form */
+.todo-form {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.todo-input {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    background-color: #333333;
+    color: #E0E0E0;
+    margin-right: 10px;
+}
+
+.add-btn {
+    padding: 10px 20px;
+    background-color: #FF5722;
+    border: none;
+    border-radius: 4px;
+    color: #FFF;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.add-btn:hover {
+    background-color: #E64A19;
+}
+
+#add-date{
+    position: relative;
+    top: -10px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    border: none;
+    background: none;
+    text-decoration: none;
+    font-size: 11px;
+    color: #E0E0E0;
+}
+#todo-date {
+    cursor: pointer;
+    width: 150px; /* Adjust width as needed */
+    height: 30px;
+    background-color: #191919;
+    font-size: 14px;
+    border:0.2px #E0E0E0;
+    border-radius: 4px;
+    padding: 1px;
+    color: #E0E0E0;
+    margin-bottom: 10px;
+  }
+
+/* To-Do List */
+.todo-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    margin-top: 10px;
+}
+
+.todo-list-div {
+    width: 100%;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px; /* Add margin for spacing between items */
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    background-color: #333333;
+}
+
+.todo-list li {
+    flex: 1;
+    font-family: 'Arial', sans-serif;
+    font-size: 14px;
+    color: #E0E0E0;
+    margin-right: 10px;
+    list-style-type: none;
+}
+
+
+.delete-btn {
+    border: none;
+    background-color: rgba(255, 255, 255, 0);
+    border: none;
+    border-radius: 4px;
+    color: #FFF;
+    cursor: pointer;
+}
+
+.delete-btn:hover {
+    background-color: none;
+    color: #d40000;
+}
+
+
+/* Responsive */
+@media (max-width: 400px) {
+    .add-btn {
+        padding: 10px;
+    }
+
+    .todo-input {
+        padding: 8px;
+    }
+}

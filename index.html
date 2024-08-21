@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minimal To-Do List</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="shortcut icon" href="https://cdn-icons-png.flaticon.com/128/3388/3388596.png" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+    <div class="container">
+        <h1 class="title">To-Do List</h1>
+        <div class="todo-form">
+            <input type="text" id='todoInput' class="todo-input" placeholder="Add a new task" autocomplete="off">
+            <button title="Add"onclick="addToDO()" class="add-btn">Add</button>
+        </div>
+        <!-- <button id='add-date' onclick="addDate()">Add Date...</button>
+        <div id="date-input">
+        </div><hr> -->
+        <ul class="todo-list">
+            <!-- To-Do Items will be added here -->
+        </ul>
+    </div>
+    <script src="./script.js"></script>
+</body>
+</html>
