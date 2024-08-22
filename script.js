@@ -10,8 +10,14 @@ window.onload = function(){
         renderToDo();
     }
 }
+const inputElement = document.body; // Replace 'yourInputId' with the actual ID of your input element
+inputElement.addEventListener('keydown', (event) => {
+  if (event.key === 'Enter') {
+    addToDO(); // Call the addToDO function
+  }
+});
 
-// Add task function
+// Add task function ---- for new task
 function addToDO() {
     const todoDateElement = document.getElementById('todo-date');
     const task = todoInput.value;
@@ -31,12 +37,15 @@ function addToDO() {
 // Display the todo items
 function renderToDo() {
     let allToDoString = '';
-    for (let i = 0; i < todoArray.length; i++) {
-        const { task, date } = todoArray[i];
-        //formatting date
+    todoArray.forEach(function(todoObject, i){
+        //todoObject holds each todo List that is in the form of Object. Similar to todoArray[index]
+        //i is going to be used as index of each todo Object i.e. list stored in an Array named todoArray.
+        const { task, date } = todoObject;
+        //formatting the date
         const options = { day: 'numeric', month: 'short', year: 'numeric' };
         const dateObj = new Date(date);
         const forattedDate = new Intl.DateTimeFormat('en-US', options).format(dateObj);
+        //innerHTML here ---
         allToDoString += `
         <div class="todo-list-div" >
             
@@ -53,18 +62,21 @@ function renderToDo() {
         </div>
         <div id="todoList-div-${i}"></div>
         `;
-    }
+    });
     localStorage.setItem('todoArrayString', JSON.stringify(todoArray));
     todoList.innerHTML = allToDoString;
 }
 
 // Remove a todo item
 function deleteToDo(i) {
-    let spliceElement = todoArray.splice(i, 1);
-    console.log(`removed element: ${spliceElement}`);
-    console.log(todoArray);
-    localStorage.setItem('todoArrayString', JSON.stringify(todoArray));
-    renderToDo();
+    if(confirm(`Do you really want to delete: "${todoArray[i].task}"?`)){
+        let deletedTask = todoArray[i].task;
+        let spliceElement = todoArray.splice(i, 1);
+        console.log(`removed element: ${spliceElement}`);
+        console.log(todoArray);
+        localStorage.setItem('todoArrayString', JSON.stringify(todoArray));
+        renderToDo();
+    }
 }
 
 // Toggle date input visibility
@@ -105,7 +117,7 @@ function editToDO(i){
     const task = toDoEditInput.value;
     const date = existingDateInput ? existingDateInput.value : null;
 
-    todoArray[i].task=toDoEditInput.value?toDoEditInput.value:todoArray[i].task; //Updating the existing task in todoArray.
+    todoArray[i].task=toDoEditInput.value||todoArray[i].task; //Updating the existing task in todoArray.
     todoArray[i].date=date?date:todoArray[i].date?todoArray[i].date:null;
     //updating the localStorage as well with new edited todoArray.
     localStorage.setItem('todoArrayString', JSON.stringify(todoArray));
