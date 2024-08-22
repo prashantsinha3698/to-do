@@ -1,5 +1,5 @@
 **Todo Web App**
-🔗live app: https://codepen.io/prashantsinha3698/pen/XWLVWZa
+🔗live app: https://codepen.io/prashantsinha3698/full/XWLVWZa
 
 **Description:**
 
